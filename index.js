@@ -18,23 +18,35 @@ app.post('/bfhl', (req, res) => {
     const alphabets = [];
     let highestLowercase = '';
 
-    data.forEach(item => {
-        if (item.type === 'number') {
-            numbers.push(item.value); 
-        } else if (item.type === 'string') {
-            alphabets.push(item.value);
+    if (!Array.isArray(data)) {
+        return res.status(400).json({
+            is_success: false,
+            user_id: "stuti_sharma_10052004", 
+            email: "stuti.sharma2021@vitbhopal.ac.in",
+            roll_number: "21BCE10748",
+            numbers: [],
+            alphabets: [],
+            highest_lowercase_alphabet: []
+        });
+    }
 
-            if (item.value === item.value.toLowerCase() && item.value > highestLowercase) {
-                highestLowercase = item.value;
+    data.forEach(item => {
+        if (!isNaN(item) && item.trim() !== '') {
+            numbers.push(item);
+        } else if (typeof item === 'string' && item.length === 1) {
+            alphabets.push(item);
+
+            if (item === item.toLowerCase() && item > highestLowercase) {
+                highestLowercase = item;
             }
         }
     });
 
     const response = {
         is_success: true,
-        user_id: "stuti_sharma_10052004", 
-        email: "stuti.sharma2021@vitbhopal.ac.in",      
-        roll_number: "21BCE10748",     
+        user_id: "stuti_sharma_10052004",
+        email: "stuti.sharma2021@vitbhopal.ac.in",
+        roll_number: "21BCE10748",
         numbers: numbers,
         alphabets: alphabets,
         highest_lowercase_alphabet: highestLowercase ? [highestLowercase] : []
